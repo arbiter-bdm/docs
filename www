@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arbiter IO — Technical Guidance. Proven Outcomes.</title>
+  <meta name="description" content="Arbiter IO provides strategic technical guidance and infrastructure expertise across the full computing spectrum — from mainframe to AI clusters. Three decades. Fortune 100 clients. Real results."/>
+  <meta property="og:title" content="Arbiter IO — Technical Guidance. Proven Outcomes."/>
+  <meta property="og:description" content="Strategic technical guidance from mainframe to AI clusters. Three decades of Fortune 100 experience."/>
+  <meta property="og:url" content="https://www.arbiter-io.com"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #151616;
+      --surface:  #222322;
+      --mid:      #323333;
+      --grey-mid: #494A49;
+      --grey-lt:  #6C6D6D;
+      --orange:   #F57C2F;
+      --orange-d: #B44B0F;
+      --orange-glow: rgba(245,124,47,0.12);
+      --white:    #E8E6E0;
+      --off-w:    #B0AEA8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ───────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── ANNOUNCEMENT BAR ───────────────────────────────────── */
+    .ann {
+      background: var(--surface);
+      border-bottom: 1px solid var(--orange);
+      padding: 9px 32px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--orange);
+      text-transform: uppercase;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(21,22,22,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--mid);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-wrap { text-decoration: none; display: flex; align-items: baseline; gap: 10px; }
+    .logo-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      color: var(--orange);
+      line-height: 1;
+    }
+    .logo-descriptor {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--grey-lt);
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    nav { display: flex; align-items: center; gap: 36px; }
+    nav a {
+      color: var(--grey-lt);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+      transition: color 0.2s;
+      position: relative;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transition: transform 0.2s;
+      transform-origin: left;
+    }
+    nav a:hover { color: var(--white); }
+    nav a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      background: var(--orange);
+      color: var(--bg) !important;
+      padding: 10px 24px;
+      font-weight: 600;
+      font-size: 12px !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--orange-d); color: var(--white) !important; }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 40px;
+    }
+
+    /* Background grid lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--mid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--mid) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.18;
+    }
+
+    /* Orange glow origin top-left */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(245,124,47,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--orange);
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 10vw, 148px);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: var(--orange); }
+
+    .hero-sub {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(20px, 2.5vw, 30px);
+      color: var(--off-w);
+      font-style: italic;
+      margin: 24px 0 40px;
+      max-width: 680px;
+      line-height: 1.4;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      margin-bottom: 48px;
+      border: 1px solid var(--mid);
+      width: fit-content;
+    }
+    .hero-stat {
+      padding: 20px 36px;
+      border-right: 1px solid var(--mid);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--orange);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+    .hero-stat-lbl {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--grey-lt);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--orange);
+      color: var(--bg);
+      padding: 15px 36px;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--orange-d); color: var(--white); }
+    .btn-ghost {
+      border: 1px solid var(--mid);
+      color: var(--grey-lt);
+      padding: 15px 36px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--grey-mid);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      z-index: 2;
+      animation: bounce 2.4s ease-in-out infinite;
+    }
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(var(--orange), transparent);
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SECTION SHELL ───────────────────────────────────────── */
+    section { padding: 100px 40px; border-bottom: 1px solid var(--mid); }
+    .section-inner { max-width: 1280px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--orange);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1px;
+      background: var(--orange);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 72px);
+      letter-spacing: 0.03em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 48px;
+    }
+    .section-title em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    /* ── WHAT WE DO ──────────────────────────────────────────── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--mid);
+      margin-top: 48px;
+    }
+    .service-card {
+      background: var(--surface);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--orange);
+      transition: height 0.4s ease;
+    }
+    .service-card:hover::before { height: 100%; }
+    .service-card:hover { background: #262826; }
+
+    .service-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      color: var(--mid);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: color 0.3s;
+    }
+    .service-card:hover .service-num { color: var(--orange-glow); }
+    .service-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+    .service-body {
+      font-size: 14px;
+      color: var(--off-w);
+      line-height: 1.7;
+    }
+
+    /* ── EXPERIENCE BAND ─────────────────────────────────────── */
+    .exp-band {
+      background: var(--surface);
+      padding: 80px 40px;
+      border-top: 1px solid var(--mid);
+      border-bottom: 2px solid var(--orange);
+      position: relative;
+      overflow: hidden;
+    }
+    .exp-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--orange-glow) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .exp-band-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .exp-band-left .big-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 160px;
+      line-height: 0.85;
+      color: var(--orange);
+      opacity: 0.9;
+      letter-spacing: -0.02em;
+    }
+    .exp-band-left p {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey-lt);
+      margin-top: 8px;
+    }
+    .exp-band-right h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(22px, 3vw, 36px);
+      color: var(--white);
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+    .exp-band-right p {
+      font-size: 15px;
+      color: var(--off-w);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    /* ── CLIENT TIER STRIP ───────────────────────────────────── */
+    .client-strip {
+      border-bottom: 1px solid var(--mid);
+      padding: 48px 40px;
+      background: var(--bg);
+    }
+    .client-strip-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    .client-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--grey-mid);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .client-divider { width: 1px; height: 32px; background: var(--mid); flex-shrink: 0; }
+    .client-tiers {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .client-tier {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--grey-mid);
+      transition: color 0.2s;
+    }
+    .client-tier:hover { color: var(--orange); }
+
+    /* ── ABOUT / FOUNDERS ────────────────────────────────────── */
+    .founders-intro {
+      max-width: 720px;
+      margin-bottom: 64px;
+    }
+    .founders-intro p {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(18px, 2vw, 24px);
+      color: var(--off-w);
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    .founders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--mid);
+    }
+    .founder-card {
+      background: var(--surface);
+      padding: 48px 40px;
+      position: relative;
+    }
+    .founder-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 40px; right: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--orange), transparent);
+    }
+
+    .founder-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .founder-title {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .founder-bio {
+      font-size: 14px;
+      color: var(--off-w);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .founder-timeline {
+      border-top: 1px solid var(--mid);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+    }
+    .timeline-date {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--grey-mid);
+      white-space: nowrap;
+      min-width: 90px;
+    }
+    .timeline-role {
+      font-size: 13px;
+      color: var(--grey-lt);
+      line-height: 1.4;
+    }
+    .timeline-role strong { color: var(--white); font-weight: 500; }
+
+    .founder-linkedin {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--orange);
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 1px solid var(--orange);
+      padding: 8px 16px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .founder-linkedin:hover { background: var(--orange); color: var(--bg); }
+    .founder-linkedin svg { width: 14px; height: 14px; fill: currentColor; }
+
+    /* ── VENTURES / BUSINESS UNITS ───────────────────────────── */
+    .ventures-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--mid);
+    }
+    .venture-card {
+      background: var(--surface);
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.25s;
+      position: relative;
+    }
+    .venture-card.active { border-top: 2px solid var(--orange); }
+    .venture-card.coming { border-top: 2px solid var(--mid); opacity: 0.7; }
+    .venture-card:hover { background: #252625; }
+
+    .venture-badge {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      width: fit-content;
+    }
+    .venture-badge.live { background: var(--orange); color: var(--bg); }
+    .venture-badge.soon { border: 1px solid var(--grey-mid); color: var(--grey-mid); }
+
+    .venture-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      line-height: 1;
+    }
+    .venture-url {
+      font-size: 11px;
+      color: var(--orange);
+      letter-spacing: 0.08em;
+    }
+    .venture-desc {
+      font-size: 14px;
+      color: var(--off-w);
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+    .venture-link {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      transition: gap 0.2s;
+    }
+    .venture-link:hover { gap: 14px; }
+    .venture-link::after { content: '→'; }
+
+    /* ── CONTACT BAND ────────────────────────────────────────── */
+    .contact-band {
+      background: var(--surface);
+      border-top: 2px solid var(--orange);
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-band::before {
+      content: '';
+      position: absolute;
+      bottom: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(245,124,47,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-band h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 72px);
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 2;
+    }
+    .contact-band p {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--off-w);
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .contact-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--mid);
+      padding: 60px 40px 32px;
+    }
+    .footer-inner { max-width: 1280px; margin: 0 auto; }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--mid);
+      margin-bottom: 28px;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.08em;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+    .footer-tagline {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--grey-lt);
+      margin-bottom: 16px;
+    }
+    .footer-desc { font-size: 13px; color: var(--grey-mid); line-height: 1.7; }
+    .footer-col h4 {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 18px;
+    }
+    .footer-col a {
+      display: block;
+      color: var(--grey-lt);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--orange); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--grey-mid);
+    }
+
+    /* ── FADE-IN ANIMATION ───────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .services-grid    { grid-template-columns: 1fr 1fr; }
+      .ventures-grid    { grid-template-columns: 1fr 1fr; }
+      .footer-top       { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .exp-band-inner   { grid-template-columns: 1fr; gap: 32px; }
+      .exp-band-left .big-num { font-size: 100px; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 72px 24px; }
+      .hero   { padding: 60px 24px; }
+      .header-inner { padding: 0 24px; }
+      .founders-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .ventures-grid { grid-template-columns: 1fr; }
+      .hero-stats    { flex-wrap: wrap; }
+      .hero-stat     { min-width: 120px; }
+      nav a:not(.nav-cta):not([href="#about"]) { display: none; }
+      .footer-top    { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .client-strip-inner { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement -->
+  <div class="ann">
+    Technical Guidance &nbsp;·&nbsp; Infrastructure Strategy &nbsp;·&nbsp; Three Decades of Proven Results
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo-wrap">
+        <span class="logo-name">ARBITER IO</span>
+        <span class="logo-descriptor">Technical Guidance</span>
+      </a>
+      <nav>
+        <a href="#what-we-do">What We Do</a>
+        <a href="#about">About Us</a>
+        <a href="#ventures">Our Businesses</a>
+        <a href="mailto:info@arbiter-io.com" class="nav-cta">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Arbiter IO — Strategic Technical Guidance</p>
+      <h1>THE EDGE<br>OF <span>WHAT'S</span><br>POSSIBLE.</h1>
+      <p class="hero-sub">From mainframe to AI clusters — we've designed, deployed, and managed the computing infrastructure that powers the world's largest organizations.</p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">30+</div>
+          <div class="hero-stat-lbl">Years Experience</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">F100</div>
+          <div class="hero-stat-lbl">Client Roster</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">Edge→</div>
+          <div class="hero-stat-lbl">Full Spectrum</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">∞</div>
+          <div class="hero-stat-lbl">Scale</div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#what-we-do" class="btn-primary">What We Do</a>
+        <a href="#ventures" class="btn-ghost">Our Businesses</a>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </div>
+
+  <!-- Client Tier Strip -->
+  <div class="client-strip">
+    <div class="client-strip-inner">
+      <span class="client-label">Trusted By</span>
+      <div class="client-divider"></div>
+      <div class="client-tiers">
+        <span class="client-tier">Fortune 100</span>
+        <span class="client-tier">Fortune 500</span>
+        <span class="client-tier">Service Providers</span>
+        <span class="client-tier">Federal Government</span>
+        <span class="client-tier">Startups</span>
+        <span class="client-tier">Enterprise</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- What We Do -->
+  <section id="what-we-do">
+    <div class="section-inner">
+      <p class="section-label">What We Do</p>
+      <div class="section-title">TECHNICAL GUIDANCE.<br><em>REAL OUTCOMES.</em></div>
+      <p style="max-width:640px;color:var(--off-w);font-size:16px;line-height:1.75;margin-bottom:0;">
+        Arbiter IO provides strategic technical guidance across the full computing spectrum. We don't just advise — we've built and run these systems ourselves, at scale, for the organizations that can't afford to get it wrong.
+      </p>
+      <div class="services-grid">
+        <div class="service-card fade-up">
+          <div class="service-num">01</div>
+          <h3 class="service-title">Infrastructure Strategy</h3>
+          <p class="service-body">Architecture design and strategic planning for computing infrastructure at any scale — from a single application running at the edge to massively scalable service provider grade systems. We've built both ends of that spectrum and everything in between.</p>
+        </div>
+        <div class="service-card fade-up">
+          <div class="service-num">02</div>
+          <h3 class="service-title">AI & Cloud Infrastructure</h3>
+          <p class="service-body">Kubernetes, hybrid cloud, bare metal AI deployment, and ransomware resilience. Deep hands-on expertise from mainframe-era fundamentals through modern AI cluster design. We understand what runs underneath the abstraction layers.</p>
+        </div>
+        <div class="service-card fade-up">
+          <div class="service-num">03</div>
+          <h3 class="service-title">Business & Product Turnarounds</h3>
+          <p class="service-body">We've built successful startups, led business turnarounds, and driven product pivots. Our team has held CTO, VP of Sales, SVP, and operational leadership roles — we bring the full picture, not just the technical view.</p>
+        </div>
+        <div class="service-card fade-up">
+          <div class="service-num">04</div>
+          <h3 class="service-title">Go-To-Market & Revenue Strategy</h3>
+          <p class="service-body">Channel development, distributor programs, enterprise sales strategy, and Federal market engagement. Decades of enterprise sales leadership at EMC, NetApp, Tintri, and Diamanti inform every engagement.</p>
+        </div>
+        <div class="service-card fade-up">
+          <div class="service-num">05</div>
+          <h3 class="service-title">Deployment & Operations</h3>
+          <p class="service-body">From PoC to production. Multi-tenant cloud platforms, edge deployments, HA clustering, Cisco UCS, NetApp, EMC, and beyond. We've managed infrastructure for hundreds of enterprise clients nationally and internationally.</p>
+        </div>
+        <div class="service-card fade-up">
+          <div class="service-num">06</div>
+          <h3 class="service-title">Technical Due Diligence</h3>
+          <p class="service-body">M&A technical assessments, acquisition integration planning, migration strategy, and platform rationalization. We've led due diligence at the CTO level for acquisition targets and have the scars to prove it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Band -->
+  <div class="exp-band">
+    <div class="exp-band-inner">
+      <div class="exp-band-left">
+        <div class="big-num">30</div>
+        <p>Years on the front lines</p>
+      </div>
+      <div class="exp-band-right">
+        <h2>"Because Informed Decisions Must be Made."</h2>
+        <p>Our team has been in the room — not as advisors watching from the outside, but as CTOs, SVPs, Sales VPs, and systems engineers who have designed, sold, deployed, and operated the infrastructure that keeps enterprise organizations running.</p>
+        <p>From EDS and EMC in the late 1990s through the storage wars at NetApp and Tintri, the Kubernetes era at Diamanti, and the AI infrastructure wave today — we've lived every major shift in enterprise computing. That depth is what you get when you work with Arbiter IO.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-inner">
+      <p class="section-label">About Us</p>
+      <div class="section-title">THE FOUNDERS</div>
+      <div class="founders-intro">
+        <p>Two operators with complementary superpowers — one who has built and run the technology, one who has built and run the revenue engine. Together they've worked at companies that shaped the enterprise computing landscape over three decades.</p>
+      </div>
+
+      <div class="founders-grid">
+
+        <!-- Brock -->
+        <div class="founder-card fade-up">
+          <div class="founder-name">BROCK MOWRY</div>
+          <div class="founder-title">Co-Founder &nbsp;·&nbsp; Technology & Infrastructure</div>
+          <p class="founder-bio">
+            Brock is a technology executive and Chief Technology Officer with a career built on designing and operating infrastructure that others consider complex. He started hands-on — building networks, deploying ERP systems, migrating exchange environments — and scaled all the way to CTO shaping product roadmaps at Tintri, one of the leading enterprise storage and cloud companies.
+          </p>
+          <p class="founder-bio">
+            He co-founded WHOA.com and architected a multi-tenant cloud hosting platform from the ground up, leading a distributed engineering team through acquisitions, customer migrations, and ISO 27001 compliance. At Diamanti he led systems engineering for Kubernetes-native infrastructure before becoming Field CTO and then CTO at Tintri where he holds a patent in cloud-based threat observation systems.
+          </p>
+          <p class="founder-bio">
+            His expertise spans cloud architecture, Kubernetes, hybrid cloud, ransomware defense, enterprise data platforms, Cisco UCS, NetApp, EMC, and multi-tenant operations. He is a recognized thought leader and frequent speaker at industry conferences and webinars.
+          </p>
+          <div class="founder-timeline">
+            <div class="timeline-item">
+              <span class="timeline-date">2022 – Present</span>
+              <span class="timeline-role"><strong>CTO, Tintri</strong> — Product roadmap, innovation leadership, cloud & cybersecurity strategy</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">2017 – 2019</span>
+              <span class="timeline-role"><strong>Co-Founder & CTO, WHOA.com</strong> — Multi-tenant cloud platform, M&A due diligence, engineering leadership</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">2013 – 2016</span>
+              <span class="timeline-role"><strong>Co-Founder, WHOA.com</strong> — Architected secure cloud platform from inception, ISO 27001</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">2008 – 2013</span>
+              <span class="timeline-role"><strong>Partner / Sr. Systems Engineer, Lexi-tek</strong> — Managed 250+ servers, 500+ desktops nationally</span>
+            </div>
+          </div>
+          <a href="https://www.linkedin.com/in/brock-mowry/" target="_blank" rel="noopener" class="founder-linkedin">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn Profile
+          </a>
+        </div>
+
+        <!-- Phil -->
+        <div class="founder-card fade-up">
+          <div class="founder-name">PHIL TRICKOVIC</div>
+          <div class="founder-title">Co-Founder &nbsp;·&nbsp; Revenue & Go-To-Market</div>
+          <p class="founder-bio">
+            Phil is an enterprise technology sales and revenue executive with a 30-year track record of building teams, cracking new markets, and driving growth at companies that defined the storage and infrastructure industry. He began his career in technology operations — as a DBA at EDS and IT Director at the height of the dot-com era — before making the transition into enterprise sales where he found his calling.
+          </p>
+          <p class="founder-bio">
+            At EMC he spent nearly a decade building sales teams across the Southeast. At NetApp he covered named and commercial enterprise accounts. At Tintri he rose from Regional Sales Manager to Vice President of Worldwide Sales and Marketing, building the global revenue organization and go-to-market strategy that took the company through its most aggressive growth period. He then served as VP of Sales at Diamanti during the Kubernetes infrastructure wave before returning to Tintri as SVP of Revenue.
+          </p>
+          <p class="founder-bio">
+            Phil's domain is the full revenue cycle — channel strategy, distributor relationships, Federal market development, Latin American expansion, enterprise account management, and the kind of direct enterprise selling that only comes from 30 years in the room with CIOs and CTOs.
+          </p>
+          <div class="founder-timeline">
+            <div class="timeline-item">
+              <span class="timeline-date">2021 – Present</span>
+              <span class="timeline-role"><strong>SVP of Revenue, Tintri</strong> — Global revenue leadership and go-to-market strategy</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">2019 – 2021</span>
+              <span class="timeline-role"><strong>VP Sales (AMS, Federal, LATAM), Diamanti</strong> — Kubernetes-native infrastructure sales</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">2014 – 2019</span>
+              <span class="timeline-role"><strong>VP Worldwide Sales & Marketing, Tintri</strong> — Built global revenue organization from ground up</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">2000 – 2010</span>
+              <span class="timeline-role"><strong>Sales Manager, EMC</strong> — Nearly a decade building enterprise sales in the Southeast</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-date">1996 – 1998</span>
+              <span class="timeline-role"><strong>DBA, EDS</strong> — Technology career begins in enterprise IT operations</span>
+            </div>
+          </div>
+          <a href="https://www.linkedin.com/in/phil-trickovic-a22563/" target="_blank" rel="noopener" class="founder-linkedin">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn Profile
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Ventures / Business Units -->
+  <section id="ventures" style="background:var(--surface);">
+    <div class="section-inner">
+      <p class="section-label">Our Businesses</p>
+      <div class="section-title">BUILT UNDER<br><em>ARBITER IO</em></div>
+      <p style="max-width:560px;color:var(--off-w);font-size:15px;line-height:1.75;margin-bottom:48px;">
+        Arbiter IO is the parent company. Each business unit below is a focused venture applying our team's expertise to a specific market. More are coming.
+      </p>
+      <div class="ventures-grid">
+
+        <div class="venture-card active fade-up">
+          <span class="venture-badge live">Live</span>
+          <div class="venture-name">ONLINE COMPUTE SALES</div>
+          <div class="venture-url">shop.arbiter-io.com</div>
+          <p class="venture-desc">Bare metal AI servers engineered for the full deployment spectrum — from ultra-compact edge inference systems to enterprise LLM training clusters. Twelve SKUs across four product families. No cloud dependency. Full data sovereignty.</p>
+          <a href="https://shop.arbiter-io.com" class="venture-link" target="_blank">Visit the Store</a>
+        </div>
+
+        <div class="venture-card coming fade-up">
+          <span class="venture-badge soon">Coming Soon</span>
+          <div class="venture-name">MANAGED SERVICES</div>
+          <div class="venture-url">arbiter-io.com</div>
+          <p class="venture-desc">Ongoing infrastructure management, monitoring, and support for organizations that need seasoned hands on their critical systems without the overhead of a full internal team.</p>
+        </div>
+
+        <div class="venture-card coming fade-up">
+          <span class="venture-badge soon">Coming Soon</span>
+          <div class="venture-name">ADVISORY</div>
+          <div class="venture-url">arbiter-io.com</div>
+          <p class="venture-desc">Strategic technical advisory engagements for boards, executive teams, and investors. CTO-level guidance on infrastructure strategy, technology M&A due diligence, and AI readiness assessments.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Band -->
+  <div class="contact-band">
+    <h2>LET'S TALK.</h2>
+    <p>Bring us your hardest infrastructure problem. We've probably seen it before.</p>
+    <div class="contact-actions">
+      <a href="mailto:info@arbiter-io.com" class="btn-primary">info@arbiter-io.com</a>
+      <a href="https://shop.arbiter-io.com" class="btn-ghost">Browse Our Shop</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">ARBITER IO</div>
+          <p class="footer-tagline">Because Informed Decisions Must be Made.</p>
+          <p class="footer-desc">Strategic technical guidance across the full computing spectrum. Mainframe to AI clusters. Thirty years. Fortune 100 clients. Real results.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#what-we-do">What We Do</a>
+          <a href="#about">About Us</a>
+          <a href="#ventures">Our Businesses</a>
+          <a href="mailto:info@arbiter-io.com">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Businesses</h4>
+          <a href="https://shop.arbiter-io.com" target="_blank">Online Compute Sales</a>
+          <a href="#ventures">Managed Services</a>
+          <a href="#ventures">Advisory</a>
+        </div>
+        <div class="footer-col">
+          <h4>Founders</h4>
+          <a href="https://www.linkedin.com/in/brock-mowry/" target="_blank" rel="noopener">Brock Mowry</a>
+          <a href="https://www.linkedin.com/in/phil-trickovic-a22563/" target="_blank" rel="noopener">Phil Trickovic</a>
+          <a href="mailto:info@arbiter-io.com">Get in Touch</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Arbiter IO. All Rights Reserved.</span>
+        <span>www.arbiter-io.com</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Fade-up on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
